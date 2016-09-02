@@ -19,14 +19,45 @@
 *******************************************************************************/
 package net.wyn.t1b.core;
 
+import java.io.File;
+import java.io.IOException;
+
 import net.wyn.t1b.core.exception.TrackerAlreadyExistsException;
 
 public class Tracker {
+    private static final String T1B_FOLDER = ".t1meBettle";
+    private String m_trackerParent;
+    
     public Tracker(final String cwd) {
-	/* TODO */
+	this.m_trackerParent = "";
+	
+	File currentFile = new File(cwd);
+	do {
+	    currentFile = new File(currentFile, T1B_FOLDER);
+	    if (currentFile.exists() && currentFile.isDirectory()) {
+		try {
+		    this.m_trackerParent = currentFile.getCanonicalPath();
+		} catch (final IOException ex) {
+		    System.err.println("Unable to get the directory's information");
+		    ex.printStackTrace(System.err);
+		}
+	    }
+	    currentFile = currentFile.getParentFile().getParentFile();
+	} while (this.m_trackerParent.isEmpty() && null != currentFile);
+
+	// If the trackerParent is empty, then the wanted directory is
+	// considered as the parent
+	if (this.m_trackerParent.isEmpty()) {
+	    this.m_trackerParent = cwd;
+	}
     }
 
     public void create() throws TrackerAlreadyExistsException {
-	/* TODO */
+	if (this.m_trackerParent.endsWith(T1B_FOLDER)) {
+	    throw new TrackerAlreadyExistsException();
+	}
+	
+	final File trackerDir = new File(this.m_trackerParent, T1B_FOLDER);
+	trackerDir.mkdir();
     }
 }
