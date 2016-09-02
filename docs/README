@@ -16,11 +16,17 @@ no internet connection ? What if I want to enclose all the story of a project
 inside the project, and not enclose all the bugs of all my projects inside one
 bugtracker ?
 
+And after all, why not ?
+
                                  Development
 
 Here is a list of available goals of the Make command :
 - all      => Build all the software and put the classes in the classes/ folder
 - clean    => Remove all the classes of the classes/ folder
+- run      => Run the software. Note that to pass arguments to the software you
+              have to use the syntax : make ARGS="<arg>" run
+- command  => Ask for a command's name and create the class file which
+              corresponds to the new command (and also update the Makefile)
 
                                  Built With
 

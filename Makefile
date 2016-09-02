@@ -87,8 +87,17 @@ $(CLASS_DIR)net/wyn/t1b/ui/UsageCommand.class: $(SRC_DIR)net/wyn/t1b/ui/UsageCom
 	$(JC) $(JFLAGS) $<
 
 $(CLASS_DIR)net/wyn/t1b/ui/commands/InitCommand.class: $(SRC_DIR)net/wyn/t1b/ui/commands/InitCommand.java \
+                                                       $(CLASS_DIR)net/wyn/t1b/core/Tracker.class \
+                                                       $(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class \
                         $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class
 	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/t1b/core/Tracker.class: $(SRC_DIR)net/wyn/t1b/core/Tracker.java \
+                                            $(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class
+	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class: $(SRC_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.java
+	$(JC) $(JFLAGS) $< 
 
 ################################################################################
 # DEVELOPMENT TOOLS
@@ -114,5 +123,5 @@ clean:
 
 run:
 	@cd $(CLASS_DIR) && \
-	$(JVM) $(JVMFLAGS) $(subst /,., $(MAIN_CLASS))
+	$(JVM) $(JVMFLAGS) $(subst /,., $(MAIN_CLASS)) ${ARGS}
 
