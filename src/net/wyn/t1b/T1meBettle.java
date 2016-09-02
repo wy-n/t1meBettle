@@ -18,10 +18,10 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-package net.wyn;
+package net.wyn.t1b;
 
-import net.wyn.ui.Dispatcher;
-import net.wyn.ui.AbstractCommand;
+import net.wyn.t1b.ui.Dispatcher;
+import net.wyn.t1b.ui.AbstractCommand;
 
 public class T1meBettle {
     public static void main(final String args[]) {

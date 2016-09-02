@@ -17,7 +17,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-package net.wyn.ui;
+package net.wyn.t1b.ui;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,8 +44,6 @@ public class Dispatcher {
 	    System.err.println("Unable to load the commands.");
 	    ex.printStackTrace(System.err);
 	}
-	
-
     }
     
     public AbstractCommand dispatch(final String[] args) {

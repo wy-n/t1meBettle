@@ -18,7 +18,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-package net.wyn.ui;
+package net.wyn.t1b.ui;
 
 public abstract class AbstractCommand {
     public abstract String getName();
