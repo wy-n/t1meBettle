@@ -20,6 +20,7 @@
 
 package net.wyn.ui;
 
-public interface ICommand {
-    void execute();
+public abstract class AbstractCommand {
+    public abstract String getName();
+    public abstract void execute();
 }

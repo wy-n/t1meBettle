@@ -19,9 +19,15 @@
 *******************************************************************************/
 package net.wyn.ui;
 
-public class UsageCommand implements ICommand {
+public class UsageCommand extends AbstractCommand {
     private static String SEP = System.getProperty("line.separator");
+
+    @Override
+    public String getName() {
+	return "Usage";
+    }
     
+    @Override
     public void execute() {
 	final StringBuilder usageSb = new StringBuilder();
 	usageSb.append("usage : t1b [cmd] [-h | --help] [-v | --version]")

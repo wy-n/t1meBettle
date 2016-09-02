@@ -19,9 +19,70 @@
 *******************************************************************************/
 package net.wyn.ui;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
 public class Dispatcher {
-    public ICommand dispatch(final String[] args) {
-	/* TODO */
-	return new UsageCommand();
+    private String m_classesRootPath;
+    private List<AbstractCommand> m_availableCommands;
+
+    public Dispatcher() {
+	this.m_availableCommands = new ArrayList<AbstractCommand>();
+
+	Enumeration<URL> urls = null;
+	try {
+	    urls = getClass().getClassLoader().getResources("");
+	    if (null != urls && urls.hasMoreElements()) {
+		this.m_classesRootPath = urls.nextElement().getFile();
+		this.loadClassesOf(this.m_classesRootPath);
+	    }
+	} catch (final IOException ex) {
+	    System.err.println("Unable to load the commands.");
+	    ex.printStackTrace(System.err);
+	}
+	
+
+    }
+    
+    public AbstractCommand dispatch(final String[] args) {
+	AbstractCommand result = new UsageCommand();
+
+	if (args.length > 0) {
+	    for (final AbstractCommand cmd : this.m_availableCommands) {
+		if (cmd.getName().equals(args[0])) {
+		    result = cmd;
+		    break;
+		}
+	    }
+	}
+	
+	return result;
+    }
+
+    private void loadClassesOf(final String path) throws IOException {
+	final File pathFile = new File(path);
+	for (final File subfile : pathFile.listFiles()) {
+	    if (subfile.isDirectory()) {
+		this.loadClassesOf(subfile.getCanonicalPath());
+	    } else if (subfile.getName().endsWith(".class")) {
+		String className = subfile.getCanonicalPath();
+		className = className.replace(this.m_classesRootPath, "");
+		className = className.replace(".class", "");
+		className = className.replace(File.separatorChar, '.');
+		try {
+		    final Class<?> clazz = getClass().getClassLoader().loadClass(className);
+		    if (!AbstractCommand.class.equals(clazz) && AbstractCommand.class.isAssignableFrom(clazz)) {
+			this.m_availableCommands.add((AbstractCommand) clazz.newInstance());
+		    }
+		} catch (final ReflectiveOperationException ex) {
+		    System.err.println("Unable to load command.");
+		    ex.printStackTrace(System.err);
+		}
+	    }
+	}
     }
 }

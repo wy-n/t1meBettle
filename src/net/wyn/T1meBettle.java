@@ -21,12 +21,12 @@
 package net.wyn;
 
 import net.wyn.ui.Dispatcher;
-import net.wyn.ui.ICommand;
+import net.wyn.ui.AbstractCommand;
 
 public class T1meBettle {
     public static void main(final String args[]) {
 	final Dispatcher dispatcher = new Dispatcher();
-	final ICommand command = dispatcher.dispatch(args);
+	final AbstractCommand command = dispatcher.dispatch(args);
 	command.execute();
     }
 }
