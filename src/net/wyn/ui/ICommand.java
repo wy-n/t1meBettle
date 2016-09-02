@@ -18,15 +18,8 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
 
-package net.wyn;
+package net.wyn.ui;
 
-import net.wyn.ui.Dispatcher;
-import net.wyn.ui.ICommand;
-
-public class T1meBettle {
-    public static void main(final String args[]) {
-	final Dispatcher dispatcher = new Dispatcher();
-	final ICommand command = dispatcher.dispatch(args);
-	command.execute();
-    }
+public interface ICommand {
+    void execute();
 }

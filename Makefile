@@ -30,6 +30,7 @@ CLASS_DIR=classes/
 JC=javac
 JFLAGS=-Werror -d $(CLASS_DIR) -Xlint -Xlint:all -encoding utf8
 JFLAGS += -source $(JAVA_VERSION) -target $(JAVA_VERSION)
+JFLAGS += -classpath $(CLASS_DIR)
 JVM=java
 JVMFLAGS=
 
@@ -47,9 +48,22 @@ endif
 
 all: prepare $(CLASS_DIR)$(MAIN_CLASS).class
 
-$(CLASS_DIR)$(MAIN_CLASS).class: $(SRC_DIR)$(MAIN_CLASS).java
-	$(JC) $(JFLAGS) $^
+$(CLASS_DIR)$(MAIN_CLASS).class: $(SRC_DIR)$(MAIN_CLASS).java \
+                                 $(CLASS_DIR)net/wyn/ui/Dispatcher.class \
+                                 $(CLASS_DIR)net/wyn/ui/ICommand.class
+	$(JC) $(JFLAGS) $<
 
+$(CLASS_DIR)net/wyn/ui/Dispatcher.class: $(SRC_DIR)net/wyn/ui/Dispatcher.java \
+                                         $(CLASS_DIR)net/wyn/ui/ICommand.class \
+                                         $(CLASS_DIR)net/wyn/ui/UsageCommand.class
+	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/ui/ICommand.class: $(SRC_DIR)net/wyn/ui/ICommand.java
+	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/ui/UsageCommand.class: $(SRC_DIR)net/wyn/ui/UsageCommand.java \
+                                           $(CLASS_DIR)net/wyn/ui/ICommand.class
+	$(JC) $(JFLAGS) $<
 
 prepare:
 	@$(MKDIR) $(CLASS_DIR)

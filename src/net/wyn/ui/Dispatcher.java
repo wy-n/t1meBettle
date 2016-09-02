@@ -17,16 +17,11 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
+package net.wyn.ui;
 
-package net.wyn;
-
-import net.wyn.ui.Dispatcher;
-import net.wyn.ui.ICommand;
-
-public class T1meBettle {
-    public static void main(final String args[]) {
-	final Dispatcher dispatcher = new Dispatcher();
-	final ICommand command = dispatcher.dispatch(args);
-	command.execute();
+public class Dispatcher {
+    public ICommand dispatch(final String[] args) {
+	/* TODO */
+	return new UsageCommand();
     }
 }
