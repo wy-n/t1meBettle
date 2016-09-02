@@ -1,0 +1,67 @@
+                             T1MEBETTLE [WIP]
+		
+This project's provide a full command-line bug tracker software.
+
+
+                                   Why ?
+
+I made this project because I often (always) work with SSH on a lightweight
+server with no-X. And I want a huge software quality, so a bugtracker can't
+be skipped.
+
+I know that there is some programs which provides a command line interface for a
+web-based bugtracker (like MantisBT or Bugzilla). But what if I don't want to
+host a Bugtracker ? What if want to use my bug tracker on a local computer with
+no internet connection ? What if I want to enclose all the story of a project
+inside the project, and not enclose all the bugs of all my projects inside one
+bugtracker ?
+
+                                 Development
+
+Here is a list of available goals of the Make command :
+- all      => Build all the software and put the classes in the classes/ folder
+- clean    => Remove all the classes of the classes/ folder
+
+                                 Built With
+
+This software was built with the following tools :
+- git
+- OpenJDK
+- GNU Emacs
+- GNU Make
+- True Love
+
+                                 Changelog
+
+0.0.1 - [09-02-2016] - Creation of the software
+
+                                  Authors
+
+Sylvain Nieuwlandt <0zymandia5@tutanota.com> -- Initial work and software
+                                                development
+
+                                  License
+
+This project is licensed under the GPLv3 License - see the LICENSE file for
+details.
+
+                                   Trivia
+
+- The name came from Doctor Who's episode : Turn Left.
+
+                                  TodoList
+
+- [ ] t1b init
+- [ ] t1b create-version <version_name>
+- [ ] t1b add
+- [ ] t1b show <id>
+- [ ] t1b list [--status=stat] [--maxresult=number]
+- [ ] t1b add-comment <id>
+- [ ] t1b remove-comment <id> <comment_number>
+- [ ] t1b change-status <id>
+- [ ] t1b update [--field=field] <id>
+- [ ] t1b assign <id>
+- [ ] t1b search [--field=field]
+- [ ] t1b clone <id>
+- [ ] t1b -h | --help
+- [ ] t1b -v | --version
