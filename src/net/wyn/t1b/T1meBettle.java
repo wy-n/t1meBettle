@@ -27,6 +27,6 @@ public class T1meBettle {
     public static void main(final String args[]) {
 	final Dispatcher dispatcher = new Dispatcher();
 	final AbstractCommand command = dispatcher.dispatch(args);
-	command.execute();
+	command.execute(args);
     }
 }

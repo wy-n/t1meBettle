@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 
 import net.wyn.t1b.core.exception.TrackerAlreadyExistsException;
+import net.wyn.t1b.core.exception.NotUnderTrackerException;
 
 public class Tracker {
     private static final String T1B_FOLDER = ".t1meBettle";
@@ -59,5 +60,9 @@ public class Tracker {
 	
 	final File trackerDir = new File(this.m_trackerParent, T1B_FOLDER);
 	trackerDir.mkdir();
+    }
+
+    public void addVersion(final String versionName) throws NotUnderTrackerException {
+	/* TODO */
     }
 }

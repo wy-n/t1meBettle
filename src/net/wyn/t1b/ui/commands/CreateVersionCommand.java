@@ -19,24 +19,33 @@
 *******************************************************************************/
 package net.wyn.t1b.ui.commands;
 
-import net.wyn.t1b.ui.AbstractCommand;
 import net.wyn.t1b.core.Tracker;
-import net.wyn.t1b.core.exception.TrackerAlreadyExistsException;
+import net.wyn.t1b.core.exception.NotUnderTrackerException;
+import net.wyn.t1b.ui.AbstractCommand;
 
-public class InitCommand extends AbstractCommand {
+public class CreateVersionCommand extends AbstractCommand {
    @Override
    public String getName() {
-      return "init";
+      return "create-version";
    }
 
    @Override
    public void execute(final String[] args) {
+       if (args.length < 2) {
+	   System.out.println("A version's name is expected.");
+	   return;
+       } else if (args[1].contains(" ")) {
+	   System.out.println("A version's name can't contains spaces.");
+	   return;
+       }
+
        final Tracker tracker = new Tracker(System.getProperty("user.dir"));
        try {
-	   tracker.create();
-	   System.out.println("This folder is now under tracking.");
-       } catch (final TrackerAlreadyExistsException ex) {
-	   System.out.println("This folder, or one of its parent, is already under tracking.");
+	   tracker.addVersion(args[1]);
+       } catch (final NotUnderTrackerException ex) {
+	   System.out.println("This folder isn't under T1meBettle tracking.");
+       } catch (final IllegalArgumentException ex) {
+	   System.out.println("This version already exists for this project.");
        }
    }
 }

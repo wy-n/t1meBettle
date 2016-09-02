@@ -22,5 +22,5 @@ package net.wyn.t1b.ui;
 
 public abstract class AbstractCommand {
     public abstract String getName();
-    public abstract void execute();
+    public abstract void execute(final String[] args);
 }

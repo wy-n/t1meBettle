@@ -17,26 +17,8 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-package net.wyn.t1b.ui.commands;
+package net.wyn.t1b.core.exception;
 
-import net.wyn.t1b.ui.AbstractCommand;
-import net.wyn.t1b.core.Tracker;
-import net.wyn.t1b.core.exception.TrackerAlreadyExistsException;
-
-public class InitCommand extends AbstractCommand {
-   @Override
-   public String getName() {
-      return "init";
-   }
-
-   @Override
-   public void execute(final String[] args) {
-       final Tracker tracker = new Tracker(System.getProperty("user.dir"));
-       try {
-	   tracker.create();
-	   System.out.println("This folder is now under tracking.");
-       } catch (final TrackerAlreadyExistsException ex) {
-	   System.out.println("This folder, or one of its parent, is already under tracking.");
-       }
-   }
+public class NotUnderTrackerException extends Exception {
+    private static final long serialVersionUID = 1L;
 }

@@ -28,7 +28,7 @@ public class UsageCommand extends AbstractCommand {
     }
     
     @Override
-    public void execute() {
+    public void execute(final String[] args) {
 	final StringBuilder usageSb = new StringBuilder();
 	usageSb.append("usage : t1b [cmd] [-h | --help] [-v | --version]")
 	    .append(SEP);

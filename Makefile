@@ -76,6 +76,7 @@ $(CLASS_DIR)$(MAIN_CLASS).class: $(SRC_DIR)$(MAIN_CLASS).java \
 $(CLASS_DIR)net/wyn/t1b/ui/Dispatcher.class: $(SRC_DIR)net/wyn/t1b/ui/Dispatcher.java \
                                          $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class \
                           $(CLASS_DIR)net/wyn/t1b/ui/commands/InitCommand.class \
+                          $(CLASS_DIR)net/wyn/t1b/ui/commands/CreateVersionCommand.class \
                                          $(CLASS_DIR)net/wyn/t1b/ui/UsageCommand.class 
 	$(JC) $(JFLAGS) $<	
 
@@ -93,10 +94,20 @@ $(CLASS_DIR)net/wyn/t1b/ui/commands/InitCommand.class: $(SRC_DIR)net/wyn/t1b/ui/
 	$(JC) $(JFLAGS) $<
 
 $(CLASS_DIR)net/wyn/t1b/core/Tracker.class: $(SRC_DIR)net/wyn/t1b/core/Tracker.java \
-                                            $(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class
+                                            $(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class \
+                                            $(CLASS_DIR)net/wyn/t1b/core/exception/NotUnderTrackerException.class
 	$(JC) $(JFLAGS) $<
 
 $(CLASS_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.class: $(SRC_DIR)net/wyn/t1b/core/exception/TrackerAlreadyExistsException.java
+	$(JC) $(JFLAGS) $< 
+
+$(CLASS_DIR)net/wyn/t1b/ui/commands/CreateVersionCommand.class: $(SRC_DIR)net/wyn/t1b/ui/commands/CreateVersionCommand.java \
+                                                                $(CLASS_DIR)net/wyn/t1b/core/Tracker.class \
+                                                                $(CLASS_DIR)net/wyn/t1b/core/exception/NotUnderTrackerException.class \
+                        $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class
+	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/t1b/core/exception/NotUnderTrackerException.class: $(SRC_DIR)net/wyn/t1b/core/exception/NotUnderTrackerException.java
 	$(JC) $(JFLAGS) $< 
 
 ################################################################################

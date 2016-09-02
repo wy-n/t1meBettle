@@ -119,7 +119,7 @@ public class CreateCommand {
 	    .append("   }").append(SEP)
 	    .append(SEP)
 	    .append("   @Override").append(SEP)
-	    .append("   public void execute() {").append(SEP)
+	    .append("   public void execute(final String[] args) {").append(SEP)
 	    .append("      /* TODO Generated method : Not implemented. */").append(SEP)
 	    .append("   }").append(SEP)
 	    .append("}").append(SEP);
