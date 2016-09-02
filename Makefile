@@ -75,14 +75,19 @@ $(CLASS_DIR)$(MAIN_CLASS).class: $(SRC_DIR)$(MAIN_CLASS).java \
 
 $(CLASS_DIR)net/wyn/t1b/ui/Dispatcher.class: $(SRC_DIR)net/wyn/t1b/ui/Dispatcher.java \
                                          $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class \
-                                         $(CLASS_DIR)net/wyn/t1b/ui/UsageCommand.class
-	$(JC) $(JFLAGS) $<
+                          $(CLASS_DIR)net/wyn/t1b/ui/commands/InitCommand.class \
+                                         $(CLASS_DIR)net/wyn/t1b/ui/UsageCommand.class 
+	$(JC) $(JFLAGS) $<	
 
 $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class: $(SRC_DIR)net/wyn/t1b/ui/AbstractCommand.java
 	$(JC) $(JFLAGS) $<
 
 $(CLASS_DIR)net/wyn/t1b/ui/UsageCommand.class: $(SRC_DIR)net/wyn/t1b/ui/UsageCommand.java \
                                            $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class
+	$(JC) $(JFLAGS) $<
+
+$(CLASS_DIR)net/wyn/t1b/ui/commands/InitCommand.class: $(SRC_DIR)net/wyn/t1b/ui/commands/InitCommand.java \
+                        $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class
 	$(JC) $(JFLAGS) $<
 
 ################################################################################
@@ -92,7 +97,7 @@ command: $(TOOLS_DIR)CreateCommand.jar
 	@$(JVM) -jar $^
 
 $(TOOLS_DIR)CreateCommand.jar:$(TOOLS_SRC_DIR)net/wyn/t1b/dev/CreateCommand.java
-	@mkdir $(TOOLS_DIR)CreateCommand
+	@$(MKDIR) $(TOOLS_DIR)CreateCommand
 	@$(JC) -d $(TOOLS_DIR)CreateCommand $<		
 	@echo "Main-Class: net.wyn.t1b.dev.CreateCommand" > $(TOOLS_DIR)CreateCommand/manifest.txt
 	@cd $(TOOLS_DIR)CreateCommand && $(JAR) -cfm ../CreateCommand.jar manifest.txt net/wyn/t1b/dev/*.class

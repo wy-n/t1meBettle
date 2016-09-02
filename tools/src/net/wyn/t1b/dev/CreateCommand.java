@@ -20,35 +20,42 @@
 
 package net.wyn.t1b.dev;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class CreateCommand {
+    private static final String SEP = System.getProperty("line.separator");
     private static final String CMD_PKG_PATH = "src/net/wyn/t1b/ui/commands";
 
     public static void main(final String[] args) {
-	/* TODO : modify the Makefile for including the class */
+	final CreateCommand tool = new CreateCommand();
 	Scanner scanner = new Scanner(System.in);
 	System.out.print("New command's name ? > ");
 	final String cmd = scanner.next();
-	if (cmd.isEmpty() || cmd.contains(' ')) {
+	if (cmd.isEmpty() || cmd.contains(" ")) {
 	    System.out.println("The command's name can't contains spaces.");
 	    return;
 	}
-	final cmdClassName = this.transformToClassName(cmd);
+	final String cmdClassName = tool.transformToClassName(cmd);
 	final File[] cmdClasses = new File(System.getProperty("user.dir"),
 					   CMD_PKG_PATH).listFiles();
-	
-	for (final File cmdClass : cmdClasses) {
-	    if (cmdClass.getName().equals(new StringBuilder(cmdClassName)
-					  .append(".java").toString())) {
-		System.out.println("A command with this name already exists.");
-		return;
+
+	if (null != cmdClasses) {
+	    for (final File cmdClass : cmdClasses) {
+		if (cmdClass.getName().equals(new StringBuilder(cmdClassName)
+					      .append(".java").toString())) {
+		    System.out.println("A command with this name already exists.");
+		    return;
+		}
 	    }
 	}
 
-	this.createCmdClass(cmd);
-	this.updateMakefileWith(cmd);
+	tool.createCmdClass(cmd);
+	tool.updateMakefileWith(cmd);
     }
 
     private String transformToClassName(final String cmd) {
@@ -71,11 +78,12 @@ public class CreateCommand {
     }
 
     private void createCmdClass(final String cmd) {
-	final String SEP = System.getProperty("line.separator");
 	final String className = this.transformToClassName(cmd);
 	final StringBuilder classFileName = new StringBuilder();
 	classFileName.append(System.getProperty("user.dir"));
+	classFileName.append('/');
 	classFileName.append(CMD_PKG_PATH);
+	classFileName.append('/');
 	classFileName.append(className);
 	classFileName.append(".java");
 
@@ -112,16 +120,68 @@ public class CreateCommand {
 	    .append(SEP)
 	    .append("   @Override").append(SEP)
 	    .append("   public void execute() {").append(SEP)
-	    .append("      /* TODO Generated method : Not implemented.").append(SEP)
+	    .append("      /* TODO Generated method : Not implemented. */").append(SEP)
 	    .append("   }").append(SEP)
 	    .append("}").append(SEP);
 
-	final FileWriter fw = new FileWriter(new File(classFileName));
-	fw.write(classContent.toString().getBytes());
-	fw.close();
+	try {
+	    final File fileClass = new File(classFileName.toString());
+	    fileClass.createNewFile();
+	    final FileWriter fw = new FileWriter(fileClass);
+	    fw.write(classContent.toString());
+	    fw.close();
+	} catch (final IOException ex) {
+	    System.err.println("Unable to create the Java file of the class.");
+	    ex.printStackTrace(System.err);
+	}
     }
     
-    private void updateMakefileWith(cmd) {
-	/* TODO */
+    private void updateMakefileWith(final String cmd) {
+	final String className = this.transformToClassName(cmd);
+	final StringBuilder sbMakefile = new StringBuilder();
+	final File makeFile = new File(System.getProperty("user.dir"), "Makefile");
+	String currentLine = "";
+	boolean buildMagicPassed = false;
+	boolean linesInserted = false;
+	boolean dispatcherPassed = false;
+	boolean dependancyInserted = false;
+	try {
+	    final BufferedReader fileReader = new BufferedReader(new FileReader(makeFile));
+	    currentLine = fileReader.readLine();
+	    while (null != currentLine) {
+		if (currentLine.contains("all:")) {
+		    buildMagicPassed = true;
+		} else if (!dispatcherPassed && currentLine.contains("ui/Dispatcher.class:")) {
+		    dispatcherPassed = true;
+		} else if (dispatcherPassed && !dependancyInserted &&
+			   currentLine.contains("UsageCommand.class")) {
+		    sbMakefile.append("                          $(CLASS_DIR)net/wyn/t1b/ui/commands/");
+		    sbMakefile.append(className).append(".class \\").append(SEP);
+		    dependancyInserted = true;
+		} else if (currentLine.startsWith("########")
+			   && buildMagicPassed && !linesInserted) {
+		    sbMakefile.append("$(CLASS_DIR)net/wyn/t1b/ui/commands/").append(className).append(".class:");
+		    sbMakefile.append(" $(SRC_DIR)net/wyn/t1b/ui/commands/").append(className).append(".java \\").append(SEP);
+		    sbMakefile.append("                        $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class").append(SEP);
+		    sbMakefile.append("	$(JC) $(JFLAGS) $<").append(SEP).append(SEP);
+		    linesInserted = true;
+		}
+		sbMakefile.append(currentLine).append(SEP);
+		currentLine = fileReader.readLine();
+	    }
+	    fileReader.close();
+	} catch (final IOException ex) {
+	    System.err.println("Unable to read the project's Makefile.");
+	    ex.printStackTrace(System.err);
+	}
+
+	try {
+	    final FileWriter fw = new FileWriter(makeFile);
+	    fw.write(sbMakefile.toString());
+	    fw.close();
+	} catch (final IOException ex) {
+	    System.err.println("Unable to write the Makefile with the new class.");
+	    ex.printStackTrace(System.err);
+	}
     }
 }
