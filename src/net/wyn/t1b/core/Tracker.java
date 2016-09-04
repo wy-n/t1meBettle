@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import net.wyn.t1b.core.exception.TrackerAlreadyExistsException;
 import net.wyn.t1b.core.exception.NotUnderTrackerException;
+import net.wyn.t1b.core.serializers.TrackerSerializer;
 
 public class Tracker {
     private static final String T1B_FOLDER = ".t1meBettle";
@@ -62,7 +63,24 @@ public class Tracker {
 	trackerDir.mkdir();
     }
 
-    public void addVersion(final String versionName) throws NotUnderTrackerException {
-	/* TODO */
+    public void registerVersion(final String versionName) throws NotUnderTrackerException {
+	if (!this.m_trackerParent.endsWith(T1B_FOLDER)) {
+	    throw new NotUnderTrackerException();
+	}
+
+	final TrackerFile trackerFile = this.getTrackerFile();
+	trackerFile.addVersion(versionName);
+	final TrackerSerializer serializer = new TrackerSerializer();
+	serializer.save(trackerFile);
+    }
+
+    private TrackerFile getTrackerFile() {
+	final File trackerFilePath = new File(this.m_trackerParent, TrackerFile.T1B_FILENAME);
+	final TrackerSerializer serializer = new TrackerSerializer();
+	if (serializer.exists(trackerFilePath.getAbsolutePath())) {
+	    return serializer.load(trackerFilePath.getAbsolutePath());
+	} else {
+	    return new TrackerFile(this.m_trackerParent);
+	}
     }
 }

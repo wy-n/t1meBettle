@@ -160,9 +160,15 @@ public class CreateCommand {
 		    dependancyInserted = true;
 		} else if (currentLine.startsWith("########")
 			   && buildMagicPassed && !linesInserted) {
-		    sbMakefile.append("$(CLASS_DIR)net/wyn/t1b/ui/commands/").append(className).append(".class:");
+		    final StringBuilder sbLineToInsert = new StringBuilder();
+		    sbLineToInsert.append("$(CLASS_DIR)net/wyn/t1b/ui/commands/").append(className);
+		    sbLineToInsert.append(".class: ");
+		    sbMakefile.append(sbLineToInsert.toString());
 		    sbMakefile.append(" $(SRC_DIR)net/wyn/t1b/ui/commands/").append(className).append(".java \\").append(SEP);
-		    sbMakefile.append("                        $(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class").append(SEP);
+		    for (int i=0; i < sbLineToInsert.toString().length(); i++) {
+			sbMakefile.append(' ');
+		    }
+		    sbMakefile.append("$(CLASS_DIR)net/wyn/t1b/ui/AbstractCommand.class").append(SEP);
 		    sbMakefile.append("	$(JC) $(JFLAGS) $<").append(SEP).append(SEP);
 		    linesInserted = true;
 		}

@@ -17,35 +17,27 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-package net.wyn.t1b.ui.commands;
+package net.wyn.t1b.core;
 
-import net.wyn.t1b.core.Tracker;
-import net.wyn.t1b.core.exception.NotUnderTrackerException;
-import net.wyn.t1b.ui.AbstractCommand;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CreateVersionCommand extends AbstractCommand {
-   @Override
-   public String getName() {
-      return "create-version";
+public class TrackerFile {
+   public static final String T1B_FILENAME = "infos.t1b";
+   private transient File m_trackerFile;
+   private List<String> m_versionList;
+    
+   public TrackerFile(final String trackerPath) {
+      this.m_trackerFile = new File(trackerPath, T1B_FILENAME);
    }
 
-   @Override
-   public void execute(final String[] args) {
-       if (args.length < 2) {
-	   System.out.println("A version's name is expected.");
-	   return;
-       } else if (args[1].contains(" ")) {
-	   System.out.println("A version's name can't contains spaces.");
-	   return;
-       }
+   public void addVersion(final String versionName) {
+      if (this.m_versionList.contains(versionName)) {
+         // A Set will erase the data
+         throw new IllegalArgumentException("This version already exists.");
+      }
 
-       final Tracker tracker = new Tracker(System.getProperty("user.dir"));
-       try {
-	   tracker.registerVersion(args[1]);
-       } catch (final NotUnderTrackerException ex) {
-	   System.out.println("This folder isn't under T1meBettle tracking.");
-       } catch (final IllegalArgumentException ex) {
-	   System.out.println("This version already exists for this project.");
-       }
+      this.m_versionList.add(versionName);
    }
 }

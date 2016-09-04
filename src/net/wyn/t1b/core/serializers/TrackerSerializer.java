@@ -17,35 +17,22 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 *******************************************************************************/
-package net.wyn.t1b.ui.commands;
+package net.wyn.t1b.core.serializers;
 
-import net.wyn.t1b.core.Tracker;
-import net.wyn.t1b.core.exception.NotUnderTrackerException;
-import net.wyn.t1b.ui.AbstractCommand;
+import net.wyn.t1b.core.TrackerFile;
 
-public class CreateVersionCommand extends AbstractCommand {
-   @Override
-   public String getName() {
-      return "create-version";
+public class TrackerSerializer {
+   public boolean exists(final String filePath) {
+       /* TODO */
+       return false;
    }
-
-   @Override
-   public void execute(final String[] args) {
-       if (args.length < 2) {
-	   System.out.println("A version's name is expected.");
-	   return;
-       } else if (args[1].contains(" ")) {
-	   System.out.println("A version's name can't contains spaces.");
-	   return;
-       }
-
-       final Tracker tracker = new Tracker(System.getProperty("user.dir"));
-       try {
-	   tracker.registerVersion(args[1]);
-       } catch (final NotUnderTrackerException ex) {
-	   System.out.println("This folder isn't under T1meBettle tracking.");
-       } catch (final IllegalArgumentException ex) {
-	   System.out.println("This version already exists for this project.");
-       }
+   
+   public TrackerFile load(final String filePath) {
+       /* TODO */
+       return null;
+   }
+   
+    public void save(final TrackerFile trackerFile) {
+	/* TODO */
    }
 }
