@@ -58,7 +58,7 @@ details.
                                   TodoList
 
 - [X] t1b init
-- [ ] t1b create-version <version_name>
+- [X] t1b create-version <version_name>
 - [ ] t1b add
 - [ ] t1b show <id>
 - [ ] t1b list [--status=stat] [--maxresult=number]

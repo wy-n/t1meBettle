@@ -20,24 +20,35 @@
 package net.wyn.t1b.core;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackerFile {
-   public static final String T1B_FILENAME = "infos.t1b";
-   private transient File m_trackerFile;
-   private List<String> m_versionList;
+public class TrackerFile implements Serializable {
+    public static final String T1B_FILENAME = "infos.t1b";
+    private static final long serialVersionUID = 1L;
+    private transient File m_trackerFile;
+    private List<String> m_versionList;
     
-   public TrackerFile(final String trackerPath) {
-      this.m_trackerFile = new File(trackerPath, T1B_FILENAME);
-   }
+    public TrackerFile(final String trackerPath) {
+	this.m_trackerFile = new File(trackerPath, T1B_FILENAME);
+	this.m_versionList = new ArrayList<String>();
+    }
+    
+    public void addVersion(final String versionName) {
+	if (this.m_versionList.contains(versionName)) {
+	    // A Set will erase the data
+	    throw new IllegalArgumentException("This version already exists.");
+	}
+	
+	this.m_versionList.add(versionName);
+    }
+    
+    public void setTrackerFile(final File trackerFile) {
+	this.m_trackerFile = trackerFile;
+    }
 
-   public void addVersion(final String versionName) {
-      if (this.m_versionList.contains(versionName)) {
-         // A Set will erase the data
-         throw new IllegalArgumentException("This version already exists.");
-      }
-
-      this.m_versionList.add(versionName);
-   }
+    public String getFilePath() {
+	return this.m_trackerFile.getAbsolutePath();
+    }
 }

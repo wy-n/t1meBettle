@@ -71,16 +71,25 @@ public class Tracker {
 	final TrackerFile trackerFile = this.getTrackerFile();
 	trackerFile.addVersion(versionName);
 	final TrackerSerializer serializer = new TrackerSerializer();
-	serializer.save(trackerFile);
+	try {
+	    serializer.save(trackerFile);
+	} catch (final IOException ex) {
+	    System.err.println("Unable to save the tracker's informations.");
+	    ex.printStackTrace(System.err);
+	}
     }
 
     private TrackerFile getTrackerFile() {
 	final File trackerFilePath = new File(this.m_trackerParent, TrackerFile.T1B_FILENAME);
 	final TrackerSerializer serializer = new TrackerSerializer();
 	if (serializer.exists(trackerFilePath.getAbsolutePath())) {
-	    return serializer.load(trackerFilePath.getAbsolutePath());
-	} else {
-	    return new TrackerFile(this.m_trackerParent);
+	    try {
+		return serializer.load(trackerFilePath.getAbsolutePath());
+	    } catch (final IOException ex) {
+		System.err.println("Unable to read the tracker's informations.");
+		ex.printStackTrace(System.err);
+	    }
 	}
+	return new TrackerFile(this.m_trackerParent);
     }
 }
